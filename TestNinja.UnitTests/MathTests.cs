@@ -9,14 +9,22 @@ namespace TestNinja.UnitTests
     [TestFixture]
     public class MathTests
     {
+
+        // SetUp
+        private Math _math;
+        
+        [SetUp]
+        public void SetUp()
+        {
+            _math = new Math();
+        }
+
+
         [Test]
         public void Add_WhenCalled_ReturnTheSumOfArguments()
         {
-            // Arrange
-            var math = new Math();
-
             // Act
-            var result = math.Add(1, 2);
+            var result = _math.Add(1, 2);
 
             // Assert
             Assert.That(result, Is.EqualTo(3));
@@ -24,43 +32,18 @@ namespace TestNinja.UnitTests
 
 
         [Test]
-        public void Max_FirstArgumentIsGreater_ReturnTheFirstArgument()
+        [TestCase(2, 1, 2)]
+        [TestCase(1, 2, 2)]
+        [TestCase(1, 1, 1)]
+        public void Max_WhenCalled_ReturnTheGreaterArgument(int a, int b, int expectedResult)
         {
-            // Arrange
-            var math = new Math();
-
             // Act
-            var result = math.Max(2, 1);
+            var result = _math.Max(a, b);
 
             // Asser
-            Assert.That(result, Is.EqualTo(2));
+            Assert.That(result, Is.EqualTo(expectedResult));
         }
 
-        [Test]
-        public void Max_SecondArgumentIsGreater_ReturnTheSecondArgument()
-        {
-            // Arrange
-            var math = new Math();
-
-            // Act
-            var result = math.Max(2, 3);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(3));
-        }
-
-        [Test]
-        public void Max_ArgumentsAreEqual_ReturnTheSameArgument()
-        {
-            // Arrange
-            var math = new Math();
-
-            // Act
-            var result = math.Max(4, 4);
-
-            // Assert
-            Assert.That(result, Is.EqualTo(4));
-        }
 
     }
 }
