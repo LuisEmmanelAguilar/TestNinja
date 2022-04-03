@@ -21,7 +21,6 @@ namespace TestNinja.UnitTests
 
 
         [Test]
-        [Ignore("Need to check it later")]
         public void Add_WhenCalled_ReturnTheSumOfArguments()
         {
             // Act
