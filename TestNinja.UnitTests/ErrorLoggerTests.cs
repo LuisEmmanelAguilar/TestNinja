@@ -35,17 +35,24 @@ namespace TestNinja.UnitTests
             Assert.That(() => _logger.Log(error), Throws.ArgumentNullException);
         }
 
+        // Testing Methods that Raise an Event
         [Test]
         public void Log_ValidError_RaiseErrorLoggedEvent()
         {
-            var logger = new ErrorLogger();
             var id = Guid.Empty;
 
-            logger.ErrorLogged += (sender, args) => { id = args; };
-            logger.Log("a");
+            // when we raise the Error Logged Method we send
+            // id into args
+            _logger.ErrorLogged += (sender, args) => { id = args; };
+            _logger.Log("a");
+
+
+            // if the event is Raised and makes the ejecution
+            // Id will not be longer an empy Guid
 
             Assert.That(id, Is.Not.EqualTo(Guid.Empty));
         }
+
 
 
     }

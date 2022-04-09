@@ -22,6 +22,8 @@ namespace TestNinja.Fundamentals
             // Write the log to a storage
             // ...
 
+            // April 9, 2022
+            // Methods that Raise an Event
             ErrorLogged?.Invoke(this, Guid.NewGuid());
         }
     }
