@@ -9,20 +9,13 @@ namespace TestNinja.Mocking
 {
     public class VideoService
     {
-        // Changing to private and following convention
         private IFileReader _fileReader;
+        private IVideoRepository _repository;
 
-
-        // Because we have changed the signature of this constructor
-        // Chances are we may broke some code somewhere else
-        // Make the fileReader parameter options with null, so whenever we create a VideoService object
-        // we do not necessarely have to pass a false reader object as an argument
-
-        // ?? If FileReader is not null, we are going to use the private fiel, otherwise
-        // if it's null, we newup a real FileReader object
-        public VideoService(IFileReader fileReader = null)
+        public VideoService(IFileReader fileReader = null, IVideoRepository repository = null)
         {
             _fileReader = fileReader ?? new FileReader();
+            _repository = repository ?? new VideoRepository();
         }
 
         public string ReadVideoTitle()
@@ -34,22 +27,17 @@ namespace TestNinja.Mocking
             return video.Title;
         }
 
+        // [] => ""
+        // [{}, {}, {}] => "1,2,3" 
         public string GetUnprocessedVideosAsCsv()
         {
             var videoIds = new List<int>();
-            
-            using (var context = new VideoContext())
-            {
-                var videos = 
-                    (from video in context.Videos
-                    where !video.IsProcessed
-                    select video).ToList();
-                
-                foreach (var v in videos)
-                    videoIds.Add(v.Id);
 
-                return String.Join(",", videoIds);
-            }
+            var videos = _repository.GetUnprocessedVideos();
+            foreach (var v in videos)
+                videoIds.Add(v.Id);
+
+            return String.Join(",", videoIds);
         }
     }
 
