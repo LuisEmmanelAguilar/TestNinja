@@ -9,17 +9,25 @@ namespace TestNinja.Mocking
 {
     public class VideoService
     {
-        // Adding parameter
-        public IFileReader FileReader { get; set; }
+        // Changing to private and following convention
+        private IFileReader _fileReader;
 
-        public VideoService()
+
+        // Because we have changed the signature of this constructor
+        // Chances are we may broke some code somewhere else
+        // Make the fileReader parameter options with null, so whenever we create a VideoService object
+        // we do not necessarely have to pass a false reader object as an argument
+
+        // ?? If FileReader is not null, we are going to use the private fiel, otherwise
+        // if it's null, we newup a real FileReader object
+        public VideoService(IFileReader fileReader = null)
         {
-            FileReader = new FileReader();
+            _fileReader = fileReader ?? new FileReader();
         }
 
         public string ReadVideoTitle()
         {
-            var str = FileReader.Read("video.txt");
+            var str = _fileReader.Read("video.txt");
             var video = JsonConvert.DeserializeObject<Video>(str);
             if (video == null)
                 return "Error parsing the video.";
